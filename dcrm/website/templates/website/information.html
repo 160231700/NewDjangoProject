@@ -1,0 +1,78 @@
+{%extends 'website/base.html'%}
+{%block content%}
+<h1> Conventional Solutions Information</h1>
+
+<h3> Convenient Solutions: Your Inconvenience, Our Business Model </h3>
+
+<div class="container">
+    Mission Statement:  To provide "solutions" that, while technically fulfilling a need, 
+    will ultimately complicate your life in delightfully unexpected ways. We strive to create a 
+    unique customer experience filled with mild frustration, unexpected delays, and the constant 
+    nagging feeling that you've made a terrible mistake.
+</div>
+<div class="parallax"></div>
+<br>
+<br>
+<div class="container">
+    Vision Statement: A world where "convenience" is a distant memory, replaced by the warm
+     embrace of mild panic and the thrill of problem-solving (problems we created, of course).
+</div>
+
+<h2> Our "Services": </h2>
+
+<button class="accordion">The "Effortless" Ordering System: </button>
+<div class="panel">
+  <p>Our state-of-the-art online platform is designed to keep you guessing.
+      Experience the joy of error messages, the frustration of forgotten passwords,
+       and the existential dread of wondering if your order actually went through.
+         Confirmation emails are purely mythical creatures.
+  </p>
+</div>
+
+<button class="accordion">"Rapid" Delivery: </button>
+<div class="panel">
+  <p>We understand the urgency of waiting.  That's why our delivery times are estimates
+     at best, and often involve a complex game of "Where's Waldo?" with our drivers.
+     Enjoy the suspense!
+  </p>
+</div>
+
+<button class="accordion">"Helpful" Customer Support: </button>
+<div class="panel">
+  <p>Our dedicated team is trained to provide responses that are technically accurate
+     but ultimately unhelpful.  Prepare for a labyrinth of automated menus, hold times 
+     that defy the laws of physics, and the distinct impression that the person on the 
+     other end is actively trying to misunderstand you.
+  </p>
+</div>
+
+<button class="accordion">"Guaranteed" Satisfaction (Terms and Conditions Apply):* </button>
+<div class="panel">
+  <p>We're so confident in our ability to disappoint that we offer a satisfaction guarantee...
+    with so many asterisks and fine print that even our lawyers haven't read it all.  
+    Good luck with that.
+  </p>
+</div>
+
+<h2> Our Core Values (We Think): </h2>
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+    
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
+        }
+      });
+    }
+    </script>
+<br>
+<br>
+<br>
+{%endblock content%}

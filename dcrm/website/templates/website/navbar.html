@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Conventional Solutions</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active">
+        <button class="button button1">
+        <a class="nav-link" href="{% url 'index'%}"> Home</a></button></li>
+      <li>
+        <button class="button button1"> 
+            <a class="nav-link" href="{% url 'information'%}" style="text-decoration:none">
+            Information
+            </a></button></li>
+      <li><a href="#"> <p>Page 2</p></a></li>
+      <li><a href="#"> <p>Page 3</p></a></li>
+    </ul>
+  </div>
+</nav>
+</body>
+</html>

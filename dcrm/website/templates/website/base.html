@@ -1,0 +1,31 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .parallax {
+          /* The image used */
+          background-image: url({%static "images/Server.jpg"%});
+        
+          /* Set a specific height */
+          min-height: 300px; 
+        
+          /* Create the parallax scrolling effect */
+          background-attachment: fixed;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+        </style>
+</head>
+
+<body>
+    {%include 'website/navbar.html'%}
+    <div class="container">
+        {%block content%}
+
+        {%endblock content%}
+    </div>
+</body>
