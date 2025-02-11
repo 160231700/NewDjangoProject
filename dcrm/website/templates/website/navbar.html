@@ -21,8 +21,21 @@
             <a class="nav-link" href="{% url 'information'%}" style="text-decoration:none">
             Information
             </a></button></li>
-      <li><a href="#"> <p>Page 2</p></a></li>
-      <li><a href="#"> <p>Page 3</p></a></li>
+      <li>
+          <button class="button button1"> 
+          <a class="nav-link" href="{% url 'dashboard' %}" style="text-decoration:none">
+          Dashboard
+          </a></button></li>
+      <li>
+        <button class="button button1"> 
+        <a class="nav-link" href="{% url 'sign_up' %}" style="text-decoration:none">
+        Sign up
+        </a></button></li>
+      <li>
+        <button class="button button1"> 
+        <a class="nav-link" href="{% url 'login' %}" style="text-decoration:none">
+        Login to an existing account
+        </a></button></li>
     </ul>
   </div>
 </nav>

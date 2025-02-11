@@ -1,0 +1,17 @@
+{% extends "website/base.html" %}
+{% block content %}
+    Hello, {{ user.username|default:"Guest" }}!
+    <hr />
+    {% comment %} Checks for user authentication before confirming password reset {% endcomment %}
+{% if user.is_authenticated %}
+        {% include "registration/logout.html" %}
+        {% comment %} Begins the password change "chain" {% endcomment %}
+        <a href="{% url 'password_change' %}">Change password</a>
+{% else %}
+{% comment %} Redirect user to login page {% endcomment %}
+    <a href="{% url 'login' %}">Login</a>
+{% comment %} Redirect user to sign up page {% endcomment %}
+    <a href="{% url 'sign_up' %}">Sign up</a>
+{% endif %}
+    
+{% endblock content %}
