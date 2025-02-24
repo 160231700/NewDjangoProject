@@ -1,0 +1,62 @@
+{% extends "website/base.html" %}
+{% block content %}
+
+<h1> Sigma </h1>
+
+<form method="get" id="arrival-time-form">
+    {{ form.Arrival_Time.label_tag }} {{ form.Arrival_Time }}
+    <button type="submit">Update Departure Times</button>
+</form>
+
+<form method="post">
+    {% csrf_token %}  {% if form.errors %}
+        <div class="alert alert-danger">
+            Please correct the errors below:
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ field|capfirst }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="form-group">
+        {{ form.Quantity.label_tag }} {{ form.Quantity }}
+    </div>
+    <div class="form-group">
+        {{ form.Departure_Time.label_tag }} {{ form.Departure_Time }}
+    </div>
+    <div class="form-group">
+        {{ form.Booking_Date.label_tag }} {{ form.Booking_Date }}
+    </div>
+    <div class="form-group">
+        {{ form.Price.label_tag }} {{ form.Price }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Ticket</button>
+</form>
+<script>
+    // JavaScript to update departure times via AJAX (Optional but recommended)
+    document.getElementById('arrival-time-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const arrivalTime = document.getElementById('id_Arrival_Time').value; // Get the arrival time
+        // Use Fetch API or AJAX to send a GET request to the view with arrivalTime
+        fetch(`?Arrival_Time=${arrivalTime}`)
+            .then(response => response.text())
+            .then(html => {
+                // Replace the form with the updated form from the server
+                const newForm = document.createElement('div');
+                newForm.innerHTML = html;
+                document.querySelector('form').replaceWith(newForm.querySelector('form'));
+            });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+{% endblock %}

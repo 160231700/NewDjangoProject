@@ -17,6 +17,8 @@ urlpatterns = [
 
     #//// End of user management////
 
+    path("ticket/", views.ticket, name="ticket"),
+
     #Shows a page with information about the corporation
     path("information/", views.information, name="information")
 ]
