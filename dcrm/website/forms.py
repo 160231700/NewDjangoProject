@@ -13,13 +13,15 @@ class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket #The model called on in models.py
         #Specify the fields
-        fields = ['Quantity', 'Arrival_Time', 'Departure_Time', 'Booking_Date', 'Price']
+        fields = ['Quantity', 'Arrival_Time', 'Departure_Time', 'Booking_Date', 'Price','User']
 
         widgets = {
             'Quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'Arrival_Time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
             'Departure_Time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
-            'Booking_Date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            'Booking_Date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'Price' :forms.HiddenInput(attrs={'required':False}),
+            'User' :forms.HiddenInput(attrs={'required':False}),
 
         }
         #Labels will show up on the front-end. Descriptions for the user.
@@ -28,7 +30,6 @@ class TicketForm(forms.ModelForm):
             'Arrival_Time': 'Arrival Time',
             'Departure_Time': 'Departure Time',
             'Booking_Date': 'Booking Date',
-            'Price': 'Price per Ticket',
         }
 
         help_texts = {

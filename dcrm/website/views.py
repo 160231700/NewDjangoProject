@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from .models import Ticket
 from .forms import CustomUserCreationForm, TicketForm
 from datetime import time, timedelta, datetime, date
 
@@ -28,31 +29,28 @@ def dashboard(request):
     return render(request, "website/dashboard.html")
 
 def ticket(request):
+    print("Ticket accessed")
     if request.method == 'POST':
-        form = TicketForm(request.POST)
+        print("Post method")
+        print(request.POST.get('Arrival_Time'))
+        
+        updated_request = request.POST.copy()
+        updated_request.update({'User':request.user})
+        form = TicketForm(updated_request)
         if form.is_valid():
+            print("Form is valid")
             ticket = form.save(commit=False)
-            ticket.User = request.User
             arrival_time = form.cleaned_data['Arrival_Time']
             departure_time = form.cleaned_data['Departure_Time']
             ticket.Price = calculate_price(arrival_time, departure_time)
             ticket.save()
-            return redirect('ticket_success')
+            print("Redirecting")
+            return redirect(reverse('index'))
+        else:
+            print(form.errors) 
     else:
-        form = TicketForm()
-        if 'Arrival_Time' in request.GET: # Check if Arrival Time is set
-            arrival_time_str = request.GET.get('Arrival_Time')
-            try:
-                arrival_time = time.fromisoformat(arrival_time_str)
-                departure_times = []
-                for i in range(1, 13): # Generate up to 12 hours ahead
-                    departure_time = (datetime.combine(date.today(), arrival_time) + timedelta(hours=i)).time()
-                    departure_times.append((departure_time, departure_time.strftime('%H:%M'))) # Format for display
-                form.fields['Departure_Time'].choices = departure_times
-            except ValueError:
-                # Handle invalid arrival time format
-                pass
-        return render(request, 'website/ticket.html', {'form': form})
+        form = TicketForm()  # Just create the empty form
+    return render(request, 'website/ticket.html', {'form': form})
 
 # Views for the registration/ template
 

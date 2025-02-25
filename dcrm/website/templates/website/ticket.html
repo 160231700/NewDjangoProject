@@ -3,13 +3,9 @@
 
 <h1> Sigma </h1>
 
-<form method="get" id="arrival-time-form">
-    {{ form.Arrival_Time.label_tag }} {{ form.Arrival_Time }}
-    <button type="submit">Update Departure Times</button>
-</form>
-
-<form method="post">
-    {% csrf_token %}  {% if form.errors %}
+<form method="post" id="ticket-form">
+    {% csrf_token %}
+    {% if form.errors %}
         <div class="alert alert-danger">
             Please correct the errors below:
             <ul>
@@ -21,6 +17,11 @@
             </ul>
         </div>
     {% endif %}
+
+    {{ form.as_p }}
+    {% comment %} <div class="form-group">
+        {{ form.Arrival_Time.label_tag }} {{ form.Arrival_Time }}
+    </div>
     <div class="form-group">
         {{ form.Quantity.label_tag }} {{ form.Quantity }}
     </div>
@@ -29,29 +30,110 @@
     </div>
     <div class="form-group">
         {{ form.Booking_Date.label_tag }} {{ form.Booking_Date }}
-    </div>
-    <div class="form-group">
-        {{ form.Price.label_tag }} {{ form.Price }}
-    </div>
+    </div> {% endcomment %}
+    {% comment %} <div class="form-group">
+        {{form.Price.label_tag}} {{form.Price}}
+    </div> {% endcomment %}
 
+    <p>Calculated Price: <span id="calculated-price">£0.00</span></p>
     <button type="submit" class="btn btn-primary">Create Ticket</button>
 </form>
+
+
 <script>
-    // JavaScript to update departure times via AJAX (Optional but recommended)
-    document.getElementById('arrival-time-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
-        const arrivalTime = document.getElementById('id_Arrival_Time').value; // Get the arrival time
-        // Use Fetch API or AJAX to send a GET request to the view with arrivalTime
-        fetch(`?Arrival_Time=${arrivalTime}`)
+    const arrivalTimeForm = document.getElementById('arrival-time-form');
+    const ticketForm = document.getElementById('ticket-form');
+
+    function attachEventListeners() {
+        const arrivalTimeSelect = document.getElementById('id_Arrival_Time');
+        const departureTimeSelect = document.getElementById('id_Departure_Time');
+        const bookingDateInput = document.getElementById('id_Booking_Date');
+        const quantityInput = document.getElementById('id_Quantity');
+        const calculatedPriceSpan = document.getElementById('calculated-price');
+
+        function calculateAndDisplayPrice() {
+            const arrivalTimeStr = arrivalTimeSelect.value;
+            const departureTimeStr = departureTimeSelect.value;
+            const quantity = parseInt(quantityInput.value) || 0;
+
+            if (arrivalTimeStr && departureTimeStr) {
+                //1970-01-01 is a standardised date for time calculations, not the actual date of the ticket.
+                const arrivalTime = new Date(`1970-01-01T${arrivalTimeStr}`);
+                const departureTime = new Date(`1970-01-01T${departureTimeStr}`);
+
+                if (departureTime <= arrivalTime) {
+                    alert("Departure time cannot be before arrival time.");
+                    departureTimeSelect.value = ""; // Reset departure time
+                    calculatedPriceSpan.textContent = '£0.00';
+                    return; // Stop further calculation
+                }
+
+                const diffInHours = Math.ceil((departureTime - arrivalTime) / (1000 * 60 * 60));
+                const price = diffInHours * 1.49 * quantity;
+                calculatedPriceSpan.textContent = `£${price.toFixed(2)}`;
+            } else {
+                calculatedPriceSpan.textContent = '£0.00';
+            }
+        }
+
+        function validateBookingDate() {
+            const bookingDateStr = bookingDateInput.value;
+            const bookingDate = new Date(bookingDateStr);
+            const now = new Date();
+
+            if (bookingDate <= now) {
+                alert("Booking date must be in the future.");
+                bookingDateInput.value = ""; // Reset booking date
+                return false; // Prevent form submission (if needed)
+            }
+            return true; // Allow form submission
+        }
+
+        if (arrivalTimeSelect) {
+            arrivalTimeSelect.addEventListener('change', calculateAndDisplayPrice);
+        }
+        if (departureTimeSelect) {
+            departureTimeSelect.addEventListener('change', calculateAndDisplayPrice);
+        }
+        if (quantityInput) {
+            quantityInput.addEventListener('change', calculateAndDisplayPrice);
+        }
+        if (bookingDateInput) {
+            bookingDateInput.addEventListener('change', validateBookingDate); // Validate on change
+        }
+
+        calculateAndDisplayPrice(); // Initial calculation
+    }
+
+    attachEventListeners();
+
+    // AJAX for Departure Times (using Booking Date)
+    arrivalTimeForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const arrivalTime = document.getElementById('id_Arrival_Time').value;
+        const bookingDate = document.getElementById('id_Booking_Date').value;
+
+        fetch(`?Arrival_Time=${arrivalTime}&Booking_Date=${bookingDate}`)
             .then(response => response.text())
             .then(html => {
-                // Replace the form with the updated form from the server
                 const newForm = document.createElement('div');
                 newForm.innerHTML = html;
-                document.querySelector('form').replaceWith(newForm.querySelector('form'));
+                document.querySelector('#ticket-form').replaceWith(newForm.querySelector('#ticket-form'));
+                attachEventListeners(); // Re-attach listeners
             });
     });
+
+    ticketForm.addEventListener('submit', function(event) {
+        if (!validateBookingDate()) { // Validate before submit
+            event.preventDefault(); // Prevent form submission if invalid
+        }
+    });
+
 </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

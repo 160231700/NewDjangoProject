@@ -15,7 +15,7 @@ class Ticket(models.Model):
     #Time-related fields
     Arrival_Time = models.TimeField()
     Departure_Time = models.TimeField()
-    Booking_Date = models.DateTimeField()
+    Booking_Date = models.DateField()
 
 
-    Price = models.DecimalField(max_digits=10, decimal_places=2) # NN,NNN,NNN.NN   10 digits. 2dp.
+    Price = models.DecimalField(max_digits=10, decimal_places=2,default=0) # NN,NNN,NNN.NN   10 digits. 2dp.
